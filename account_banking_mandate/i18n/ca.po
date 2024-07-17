@@ -103,13 +103,7 @@ msgid "Bank Accounts"
 msgstr "Comptes bancaris"
 
 #. module: account_banking_mandate
-#: model:ir.model,name:account_banking_mandate.model_bank_payment_line
-msgid "Bank Payment Lines"
-msgstr "Línies de pagament bancari"
-
-#. module: account_banking_mandate
 #: model_terms:ir.ui.view,arch_db:account_banking_mandate.view_mandate_form
-#: model_terms:ir.ui.view,arch_db:account_banking_mandate.view_mandate_tree
 msgid "Banking Mandate"
 msgstr "Mandat bancari"
 
@@ -200,7 +194,6 @@ msgstr "Data de l'últim cobrament"
 #: model:ir.model.fields,field_description:account_banking_mandate.field_account_move__mandate_id
 #: model:ir.model.fields,field_description:account_banking_mandate.field_account_payment__mandate_id
 #: model:ir.model.fields,field_description:account_banking_mandate.field_account_payment_line__mandate_id
-#: model:ir.model.fields,field_description:account_banking_mandate.field_bank_payment_line__mandate_id
 msgid "Direct Debit Mandate"
 msgstr "Mandat de càrrec directe"
 
@@ -217,7 +210,6 @@ msgstr "Mandats de càrrec directe"
 #: model:ir.model.fields,field_description:account_banking_mandate.field_account_move_line__display_name
 #: model:ir.model.fields,field_description:account_banking_mandate.field_account_payment_line__display_name
 #: model:ir.model.fields,field_description:account_banking_mandate.field_account_payment_method__display_name
-#: model:ir.model.fields,field_description:account_banking_mandate.field_bank_payment_line__display_name
 #: model:ir.model.fields,field_description:account_banking_mandate.field_res_partner__display_name
 #: model:ir.model.fields,field_description:account_banking_mandate.field_res_partner_bank__display_name
 msgid "Display Name"
@@ -284,7 +276,6 @@ msgstr "Agrupar per"
 #: model:ir.model.fields,field_description:account_banking_mandate.field_account_move_line__id
 #: model:ir.model.fields,field_description:account_banking_mandate.field_account_payment_line__id
 #: model:ir.model.fields,field_description:account_banking_mandate.field_account_payment_method__id
-#: model:ir.model.fields,field_description:account_banking_mandate.field_bank_payment_line__id
 #: model:ir.model.fields,field_description:account_banking_mandate.field_res_partner__id
 #: model:ir.model.fields,field_description:account_banking_mandate.field_res_partner_bank__id
 msgid "ID"
@@ -308,7 +299,6 @@ msgstr "Si es marca els missatges nous requeriran la vostra atenció."
 
 #. module: account_banking_mandate
 #: model:ir.model.fields,help:account_banking_mandate.field_account_banking_mandate__message_has_error
-#: model:ir.model.fields,help:account_banking_mandate.field_account_banking_mandate__message_has_sms_error
 msgid "If checked, some messages have a delivery error."
 msgstr "Si es marca, alguns missatges tenen un error de lliurament."
 
@@ -333,7 +323,6 @@ msgstr "Apunt comptable"
 #: model:ir.model.fields,field_description:account_banking_mandate.field_account_move_line____last_update
 #: model:ir.model.fields,field_description:account_banking_mandate.field_account_payment_line____last_update
 #: model:ir.model.fields,field_description:account_banking_mandate.field_account_payment_method____last_update
-#: model:ir.model.fields,field_description:account_banking_mandate.field_bank_payment_line____last_update
 #: model:ir.model.fields,field_description:account_banking_mandate.field_res_partner____last_update
 #: model:ir.model.fields,field_description:account_banking_mandate.field_res_partner_bank____last_update
 msgid "Last Modified on"
@@ -353,11 +342,6 @@ msgstr "Darrera actualització el"
 #: model:ir.model.fields,field_description:account_banking_mandate.field_account_banking_mandate__message_main_attachment_id
 msgid "Main Attachment"
 msgstr "Adjunt principal"
-
-#. module: account_banking_mandate
-#: model_terms:ir.ui.view,arch_db:account_banking_mandate.bank_payment_line_tree
-msgid "Mandate"
-msgstr "Mandat SEPA"
 
 #. module: account_banking_mandate
 #: model:ir.model.fields,field_description:account_banking_mandate.field_account_banking_mandate__format
@@ -526,11 +510,6 @@ msgid "Responsible User"
 msgstr "Usuari responsable"
 
 #. module: account_banking_mandate
-#: model:ir.model.fields,field_description:account_banking_mandate.field_account_banking_mandate__message_has_sms_error
-msgid "SMS Delivery error"
-msgstr "Error de lliurament de missatge SMS"
-
-#. module: account_banking_mandate
 #: model:ir.model.fields,field_description:account_banking_mandate.field_account_banking_mandate__scan
 msgid "Scan of the Mandate"
 msgstr "Escanejat del mandat"
@@ -676,6 +655,15 @@ msgid ""
 msgstr ""
 "Només hauria de tornar un mandat a estat esborrany si va cancel·lar-lo per "
 "error. Desitja continuar?"
+
+#~ msgid "SMS Delivery error"
+#~ msgstr "Error de lliurament de missatge SMS"
+
+#~ msgid "Bank Payment Lines"
+#~ msgstr "Línies de pagament bancari"
+
+#~ msgid "Mandate"
+#~ msgstr "Mandat SEPA"
 
 #, fuzzy
 #~ msgid "Journal Entries"

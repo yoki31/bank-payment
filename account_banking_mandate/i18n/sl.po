@@ -9,15 +9,16 @@ msgstr ""
 "Project-Id-Version: Odoo Server 11.0\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2018-03-09 14:56+0000\n"
-"PO-Revision-Date: 2018-03-09 14:56+0000\n"
-"Last-Translator: OCA Transbot <transbot@odoo-community.org>, 2017\n"
+"PO-Revision-Date: 2023-04-11 13:25+0000\n"
+"Last-Translator: Matjaz Mozetic <matjaz@luxim.si>\n"
 "Language-Team: Slovenian (https://www.transifex.com/oca/teams/23907/sl/)\n"
 "Language: sl\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: \n"
-"Plural-Forms: nplurals=4; plural=(n%100==1 ? 0 : n%100==2 ? 1 : n%100==3 || n"
-"%100==4 ? 2 : 3);\n"
+"Plural-Forms: nplurals=4; plural=n%100==1 ? 0 : n%100==2 ? 1 : n%100==3 || n"
+"%100==4 ? 2 : 3;\n"
+"X-Generator: Weblate 4.14.1\n"
 
 #. module: account_banking_mandate
 #: model_terms:ir.actions.act_window,help:account_banking_mandate.mandate_action
@@ -98,13 +99,7 @@ msgid "Bank Accounts"
 msgstr "Bančni računi"
 
 #. module: account_banking_mandate
-#: model:ir.model,name:account_banking_mandate.model_bank_payment_line
-msgid "Bank Payment Lines"
-msgstr "Postavke bančnih plačil"
-
-#. module: account_banking_mandate
 #: model_terms:ir.ui.view,arch_db:account_banking_mandate.view_mandate_form
-#: model_terms:ir.ui.view,arch_db:account_banking_mandate.view_mandate_tree
 msgid "Banking Mandate"
 msgstr "Bančni mandat"
 
@@ -192,7 +187,6 @@ msgstr "Datum zadnje obremenitve"
 #: model:ir.model.fields,field_description:account_banking_mandate.field_account_move__mandate_id
 #: model:ir.model.fields,field_description:account_banking_mandate.field_account_payment__mandate_id
 #: model:ir.model.fields,field_description:account_banking_mandate.field_account_payment_line__mandate_id
-#: model:ir.model.fields,field_description:account_banking_mandate.field_bank_payment_line__mandate_id
 msgid "Direct Debit Mandate"
 msgstr "Mandat za direktne obremenitve"
 
@@ -209,11 +203,10 @@ msgstr "Mandati za direktne obremenitve"
 #: model:ir.model.fields,field_description:account_banking_mandate.field_account_move_line__display_name
 #: model:ir.model.fields,field_description:account_banking_mandate.field_account_payment_line__display_name
 #: model:ir.model.fields,field_description:account_banking_mandate.field_account_payment_method__display_name
-#: model:ir.model.fields,field_description:account_banking_mandate.field_bank_payment_line__display_name
 #: model:ir.model.fields,field_description:account_banking_mandate.field_res_partner__display_name
 #: model:ir.model.fields,field_description:account_banking_mandate.field_res_partner_bank__display_name
 msgid "Display Name"
-msgstr "Prikazni naziv"
+msgstr "Prikazani naziv"
 
 #. module: account_banking_mandate
 #: model:ir.model.fields.selection,name:account_banking_mandate.selection__account_banking_mandate__state__draft
@@ -276,7 +269,6 @@ msgstr "Združi po"
 #: model:ir.model.fields,field_description:account_banking_mandate.field_account_move_line__id
 #: model:ir.model.fields,field_description:account_banking_mandate.field_account_payment_line__id
 #: model:ir.model.fields,field_description:account_banking_mandate.field_account_payment_method__id
-#: model:ir.model.fields,field_description:account_banking_mandate.field_bank_payment_line__id
 #: model:ir.model.fields,field_description:account_banking_mandate.field_res_partner__id
 #: model:ir.model.fields,field_description:account_banking_mandate.field_res_partner_bank__id
 msgid "ID"
@@ -300,7 +292,6 @@ msgstr ""
 
 #. module: account_banking_mandate
 #: model:ir.model.fields,help:account_banking_mandate.field_account_banking_mandate__message_has_error
-#: model:ir.model.fields,help:account_banking_mandate.field_account_banking_mandate__message_has_sms_error
 msgid "If checked, some messages have a delivery error."
 msgstr ""
 
@@ -325,7 +316,6 @@ msgstr ""
 #: model:ir.model.fields,field_description:account_banking_mandate.field_account_move_line____last_update
 #: model:ir.model.fields,field_description:account_banking_mandate.field_account_payment_line____last_update
 #: model:ir.model.fields,field_description:account_banking_mandate.field_account_payment_method____last_update
-#: model:ir.model.fields,field_description:account_banking_mandate.field_bank_payment_line____last_update
 #: model:ir.model.fields,field_description:account_banking_mandate.field_res_partner____last_update
 #: model:ir.model.fields,field_description:account_banking_mandate.field_res_partner_bank____last_update
 msgid "Last Modified on"
@@ -345,11 +335,6 @@ msgstr "Zadnjič posodobljeno"
 #: model:ir.model.fields,field_description:account_banking_mandate.field_account_banking_mandate__message_main_attachment_id
 msgid "Main Attachment"
 msgstr ""
-
-#. module: account_banking_mandate
-#: model_terms:ir.ui.view,arch_db:account_banking_mandate.bank_payment_line_tree
-msgid "Mandate"
-msgstr "Mandat"
 
 #. module: account_banking_mandate
 #: model:ir.model.fields,field_description:account_banking_mandate.field_account_banking_mandate__format
@@ -519,11 +504,6 @@ msgid "Responsible User"
 msgstr ""
 
 #. module: account_banking_mandate
-#: model:ir.model.fields,field_description:account_banking_mandate.field_account_banking_mandate__message_has_sms_error
-msgid "SMS Delivery error"
-msgstr ""
-
-#. module: account_banking_mandate
 #: model:ir.model.fields,field_description:account_banking_mandate.field_account_banking_mandate__scan
 msgid "Scan of the Mandate"
 msgstr "Sken mandata"
@@ -658,6 +638,12 @@ msgid ""
 msgstr ""
 "Mandat ponastavite v osnutek le, če ste ga pomotoma preklicali. Želite "
 "nadaljevati?"
+
+#~ msgid "Bank Payment Lines"
+#~ msgstr "Postavke bančnih plačil"
+
+#~ msgid "Mandate"
+#~ msgstr "Mandat"
 
 #~ msgid "Invoice"
 #~ msgstr "Račun"

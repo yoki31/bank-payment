@@ -1,5 +1,5 @@
 # Copyright 2010-2020 Akretion (www.akretion.com)
-# Copyright 2014-2020 Tecnativa - Pedro M. Baeza
+# Copyright 2014-2022 Tecnativa - Pedro M. Baeza
 # License AGPL-3.0 or later (https://www.gnu.org/licenses/agpl.html).
 
 from lxml import etree
@@ -78,15 +78,13 @@ class AccountPaymentOrder(models.Model):
         lines_per_group = {}
         # key = (requested_date, priority, local_instrument, categ_purpose)
         # values = list of lines as object
-        for line in self.bank_line_ids:
-            priority = line.priority
-            local_instrument = line.local_instrument
-            categ_purpose = line.category_purpose
-            # The field line.date is the requested payment date
-            # taking into account the 'date_prefered' setting
-            # cf account_banking_payment_export/models/account_payment.py
-            # in the inherit of action_open()
-            key = (line.date, priority, local_instrument, categ_purpose)
+        for line in self.payment_ids:
+            payment_line = line.payment_line_ids[:1]
+            priority = payment_line.priority
+            local_instrument = payment_line.local_instrument
+            categ_purpose = payment_line.category_purpose
+            # The field line.payment_line_date is the requested payment date
+            key = (line.payment_line_date, priority, local_instrument, categ_purpose)
             if key in lines_per_group:
                 lines_per_group[key].append(line)
             else:
@@ -145,7 +143,7 @@ class AccountPaymentOrder(models.Model):
                 )
                 instruction_identification.text = self._prepare_field(
                     "Instruction Identification",
-                    "line.name",
+                    "str(line.move_id.id)",
                     {"line": line},
                     35,
                     gen_args=gen_args,
@@ -155,7 +153,7 @@ class AccountPaymentOrder(models.Model):
                 )
                 end2end_identification.text = self._prepare_field(
                     "End to End Identification",
-                    "line.name",
+                    "str(line.move_id.id)",
                     {"line": line},
                     35,
                     gen_args=gen_args,
@@ -171,9 +169,9 @@ class AccountPaymentOrder(models.Model):
                 instructed_amount = etree.SubElement(
                     amount, "InstdAmt", Ccy=currency_name
                 )
-                instructed_amount.text = "%.2f" % line.amount_currency
-                amount_control_sum_a += line.amount_currency
-                amount_control_sum_b += line.amount_currency
+                instructed_amount.text = "%.2f" % line.amount
+                amount_control_sum_a += line.amount
+                amount_control_sum_b += line.amount
                 if not line.partner_bank_id:
                     raise UserError(
                         _(
@@ -190,9 +188,10 @@ class AccountPaymentOrder(models.Model):
                     gen_args,
                     line,
                 )
-                if line.purpose:
+                line_purpose = line.payment_line_ids[:1].purpose
+                if line_purpose:
                     purpose = etree.SubElement(credit_transfer_transaction_info, "Purp")
-                    etree.SubElement(purpose, "Cd").text = line.purpose
+                    etree.SubElement(purpose, "Cd").text = line_purpose
                 self.generate_remittance_info_block(
                     credit_transfer_transaction_info, line, gen_args
                 )

@@ -1,12 +1,14 @@
 # Copyright 2017 Camptocamp SA
 # Copyright 2017 Creu Blanca
-# Copyright 2019 Tecnativa - Pedro M. Baeza
+# Copyright 2019-2022 Tecnativa - Pedro M. Baeza
+# Copyright 2024 Tecnativa - Víctor Martínez
 # License AGPL-3.0 or later (https://www.gnu.org/licenses/agpl).
-
 from datetime import date, timedelta
 
+from freezegun import freeze_time
+
 from odoo.exceptions import UserError, ValidationError
-from odoo.tests.common import Form
+from odoo.tests.common import Form, tagged
 
 from odoo.addons.account.tests.common import AccountTestInvoicingCommon
 
@@ -77,6 +79,7 @@ class TestPaymentOrderInboundBase(AccountTestInvoicingCommon):
         return invoice_form.save()
 
 
+@tagged("post_install", "-at_install")
 class TestPaymentOrderInbound(TestPaymentOrderInboundBase):
     def test_constrains_type(self):
         with self.assertRaises(ValidationError):
@@ -88,6 +91,26 @@ class TestPaymentOrderInbound(TestPaymentOrderInboundBase):
     def test_constrains_date(self):
         with self.assertRaises(ValidationError):
             self.inbound_order.date_scheduled = date.today() - timedelta(days=1)
+        # No raise
+        self.inbound_order.write(
+            {
+                "allow_past_date": True,
+                "date_scheduled": date.today() - timedelta(days=2),
+            }
+        )
+
+    def test_invoice_communication_01(self):
+        self.assertEqual(
+            self.invoice.name, self.invoice._get_payment_order_communication()
+        )
+        self.invoice.ref = "R1234"
+        self.assertEqual(
+            self.invoice.name, self.invoice._get_payment_order_communication()
+        )
+
+    def test_invoice_communication_02(self):
+        self.invoice.payment_reference = "R1234"
+        self.assertEqual("R1234", self.invoice._get_payment_order_communication())
 
     def test_creation(self):
         payment_order = self.inbound_order
@@ -96,12 +119,12 @@ class TestPaymentOrderInbound(TestPaymentOrderInboundBase):
         payment_order.write({"journal_id": self.journal.id})
 
         self.assertEqual(len(payment_order.payment_line_ids), 1)
-        self.assertEqual(len(payment_order.bank_line_ids), 0)
+        self.assertFalse(payment_order.payment_ids)
 
         # Open payment order
         payment_order.draft2open()
 
-        self.assertEqual(payment_order.bank_line_count, 1)
+        self.assertEqual(payment_order.payment_count, 1)
 
         # Generate and upload
         payment_order.open2generated()
@@ -110,13 +133,65 @@ class TestPaymentOrderInbound(TestPaymentOrderInboundBase):
         self.assertEqual(payment_order.state, "uploaded")
         with self.assertRaises(UserError):
             payment_order.unlink()
+        matching_number = (
+            payment_order.payment_ids.payment_line_ids.move_line_id.matching_number
+        )
+        self.assertTrue(matching_number and matching_number != "P")
 
-        bank_line = payment_order.bank_line_ids
-
-        with self.assertRaises(UserError):
-            bank_line.unlink()
         payment_order.action_uploaded_cancel()
         self.assertEqual(payment_order.state, "cancel")
         payment_order.cancel2draft()
         payment_order.unlink()
         self.assertEqual(len(self.payment_order_obj.search(self.domain)), 0)
+
+    @freeze_time("2024-04-01")
+    def test_creation_transfer_move_date_01(self):
+        self.inbound_order.date_prefered = "fixed"
+        self.inbound_order.date_scheduled = "2024-06-01"
+        self.inbound_order.draft2open()
+        payment = self.inbound_order.payment_ids
+        self.assertEqual(payment.payment_line_date, date(2024, 6, 1))
+        payment_move = payment.move_id
+        self.assertEqual(payment_move.date, date(2024, 4, 1))  # now
+        self.assertEqual(
+            payment_move.line_ids.mapped("date_maturity"),
+            [date(2024, 6, 1), date(2024, 6, 1)],
+        )
+        self.assertEqual(self.inbound_order.payment_count, 1)
+        self.inbound_order.open2generated()
+        self.inbound_order.generated2uploaded()
+        self.assertEqual(self.inbound_order.state, "uploaded")
+        payment = self.inbound_order.payment_ids
+        self.assertEqual(payment.payment_line_date, date(2024, 6, 1))
+        payment_move = payment.move_id
+        self.assertEqual(payment_move.date, date(2024, 4, 1))  # now
+        self.assertEqual(
+            payment_move.line_ids.mapped("date_maturity"),
+            [date(2024, 6, 1), date(2024, 6, 1)],
+        )
+
+    @freeze_time("2024-04-01")
+    def test_creation_transfer_move_date_02(self):
+        # Simulate that the invoice had a different due date
+        self.inbound_order.payment_line_ids.ml_maturity_date = "2024-06-01"
+        self.inbound_order.draft2open()
+        payment = self.inbound_order.payment_ids
+        self.assertEqual(payment.payment_line_date, date(2024, 6, 1))
+        payment_move = payment.move_id
+        self.assertEqual(payment_move.date, date(2024, 4, 1))  # now
+        self.assertEqual(
+            payment_move.line_ids.mapped("date_maturity"),
+            [date(2024, 6, 1), date(2024, 6, 1)],
+        )
+        self.assertEqual(self.inbound_order.payment_count, 1)
+        self.inbound_order.open2generated()
+        self.inbound_order.generated2uploaded()
+        self.assertEqual(self.inbound_order.state, "uploaded")
+        payment = self.inbound_order.payment_ids
+        self.assertEqual(payment.payment_line_date, date(2024, 6, 1))
+        payment_move = payment.move_id
+        self.assertEqual(payment_move.date, date(2024, 4, 1))  # now
+        self.assertEqual(
+            payment_move.line_ids.mapped("date_maturity"),
+            [date(2024, 6, 1), date(2024, 6, 1)],
+        )
